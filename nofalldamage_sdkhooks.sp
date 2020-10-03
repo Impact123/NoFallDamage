@@ -2,13 +2,12 @@
 #include <sdkhooks>
 
 #undef REQUIRE_PLUGIN
-#include <updater>
 
 #pragma semicolon 1
 
 
 
-#define PLUGIN_VERSION "0.6.2"
+#define PLUGIN_VERSION "0.6.3"
 
 
 
@@ -36,8 +35,6 @@ new g_iClientFilter;
 
 
 
-// Updater
-#define UPDATER_URL "http://plugins.gugyclan.eu/nofalldamage_sdkhooks/nofalldamage_sdkhooks.txt"
 
 
 
@@ -66,10 +63,10 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 
 public OnPluginStart()
 {
-	g_hVersion      = CreateConVar("sm_nofalldamage_version", PLUGIN_VERSION, "Version of this plugin (Not changeable)", FCVAR_PLUGIN|FCVAR_NOTIFY|FCVAR_DONTRECORD);
-	g_hEnabled      = CreateConVar("sm_nofalldamage_enabled", "1", "Whether or not this plugin is enabled", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-	g_hTeamFilter   = CreateConVar("sm_nofalldamage_teamfilter", "0", "Team that should be protected from falldamage, 0 = Any, 2 = RED, 3 = BLUE", FCVAR_PLUGIN, true, 0.0, true, 3.0);
-	g_hClientFilter = CreateConVar("sm_nofalldamage_clientfilter", "0", "Clients that should be protected from falldamage, 0 = Any, 1 = Only Admins", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	g_hVersion      = CreateConVar("sm_nofalldamage_version", PLUGIN_VERSION, "Version of this plugin (Not changeable)", FCVAR_NOTIFY|FCVAR_DONTRECORD);
+	g_hEnabled      = CreateConVar("sm_nofalldamage_enabled", "1", "Whether or not this plugin is enabled", _, true, 0.0, true, 1.0);
+	g_hTeamFilter   = CreateConVar("sm_nofalldamage_teamfilter", "0", "Team that should be protected from falldamage, 0 = Any, 2 = RED, 3 = BLUE", _, true, 0.0, true, 3.0);
+	g_hClientFilter = CreateConVar("sm_nofalldamage_clientfilter", "0", "Clients that should be protected from falldamage, 0 = Any, 1 = Only Admins", _, true, 0.0, true, 1.0);
 	
 	
 	g_bEnabled      = GetConVarBool(g_hEnabled);
@@ -98,31 +95,6 @@ public OnPluginStart()
 		}
 	}
 }
-
-
-
-
-
-public OnAllPluginsLoaded()
-{
-    if(LibraryExists("updater"))
-    {
-        Updater_AddPlugin(UPDATER_URL);
-    }
-}
-
-
-
-
-
-public OnLibraryAdded(const String:name[])
-{
-    if(StrEqual(name, "updater"))
-    {
-        Updater_AddPlugin(UPDATER_URL);
-    }
-}
-
 
 
 
